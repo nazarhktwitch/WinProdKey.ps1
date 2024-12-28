@@ -1,11 +1,12 @@
 REM ###################################################
 REM #                                                 #
-REM # Description template: Aleff (Link down)         #
 REM # https://github.com/aleff-github/                #
+REM # Desc. example: Aleff (Link up)                  #
 REM # Title        : Exfiltrate Windows Product Key   #
 REM # Author       : NazarHK                          #
 REM # Version      : 1.0                              #
 REM # Target       : Windows 10-11                    #
+REM # Requirements : Internet access                  #
 REM #                                                 #
 REM ###################################################
 
