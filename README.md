@@ -1,5 +1,5 @@
 # WinProdKey.ps1
-Hosting for WinProdKey.ps1 (Script for Windows Product Stiller for Flipper Zero script modified by me)
+Hosting for WinProdKey.ps1 (NOW NOT ONLY FOR IT) (Script for Windows Product Stiller for Flipper Zero script modified by me)
 
 PRODUCT KEY WILL APPEAR PRODUCT KEY WILL APPEAR [HERE](https://discord.gg/uYYD6Ysm8P) (In #product-key-stiller)
 
